@@ -17,7 +17,7 @@ class ProductsTest < ApplicationSystemTestCase
     fill_in "Description", with: @product.description
     fill_in "Image url", with: @product.image_url
     fill_in "Price", with: @product.price
-    fill_in "Title", with: @product.title
+    fill_in "Title", with: "Karel The Robot in a Nutshell"
     click_on "Create Product"
 
     assert_text "Product was successfully created"
@@ -45,5 +45,16 @@ class ProductsTest < ApplicationSystemTestCase
     end
 
     assert_text "Product was successfully destroyed"
+  end
+  test "check routing number" do
+    visit store_index_url
+    click_on 'Add to Cart', match: :first
+    click_on 'Checkout'
+    fill_in 'order_name', with: 'Dave Thomas'
+    fill_in 'order_address', with: '123 Main Street'
+    fill_in 'order_email', with: 'dave@example.com'
+    assert_no_selector "#order_routing_number"
+    select 'Check', from: 'Pay type'
+    assert_selector "#order_routing_number"
   end
 end
